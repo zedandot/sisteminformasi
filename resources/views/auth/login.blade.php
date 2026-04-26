@@ -16,7 +16,6 @@
         
         <!-- Left Side: Branding & Info (Hidden on Mobile) -->
         <div class="hidden lg:flex flex-col justify-between w-1/2 p-14 rounded-[2.5rem] bg-slate-900 text-white relative overflow-hidden shadow-2xl shadow-slate-900/40">
-            <!-- Background aesthetic pattern -->
             <div class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand-400 via-slate-900 to-slate-900"></div>
             
             <div class="relative z-10">
@@ -72,22 +71,24 @@
                 </div>
 
                 <div class="glass-panel rounded-3xl p-8 sm:p-10 space-y-6">
-                    <form action="/admin/dashboard" method="GET" class="space-y-6">
+                    <form action="{{ route('login') }}" method="POST" class="space-y-6">
                         @csrf
                         <div class="space-y-2">
                             <label class="text-sm font-bold text-slate-700 ml-1">Alamat Email</label>
-                            <input type="email" value="admin@asakaryaalam.com" class="w-full bg-white border border-slate-200 text-slate-900 text-sm rounded-2xl focus:ring-4 focus:ring-brand-500/20 focus:border-brand-500 block p-4 font-medium transition-all duration-300 outline-none" placeholder="nama@asakaryaalam.com">
+                            <input type="email" name="email" value="{{ old('email') }}" class="w-full bg-white border border-slate-200 text-slate-900 text-sm rounded-2xl focus:ring-4 focus:ring-brand-500/20 focus:border-brand-500 block p-4 font-medium transition-all duration-300 outline-none" placeholder="nama@asakaryaalam.com" required>
+                            @error('email')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                         </div>
                         <div class="space-y-2">
                             <div class="flex items-center justify-between ml-1">
                                 <label class="text-sm font-bold text-slate-700">Kata Sandi</label>
                                 <a href="#" class="text-xs font-semibold text-brand-600 hover:text-brand-700">Lupa sandi?</a>
                             </div>
-                            <input type="password" value="password123" class="w-full bg-white border border-slate-200 text-slate-900 text-sm rounded-2xl focus:ring-4 focus:ring-brand-500/20 focus:border-brand-500 block p-4 font-medium transition-all duration-300 outline-none" placeholder="••••••••">
+                            <input type="password" name="password" class="w-full bg-white border border-slate-200 text-slate-900 text-sm rounded-2xl focus:ring-4 focus:ring-brand-500/20 focus:border-brand-500 block p-4 font-medium transition-all duration-300 outline-none" placeholder="••••••••" required>
+                            @error('password')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                         </div>
 
                         <button type="submit" class="w-full text-white bg-slate-900 hover:bg-brand-600 focus:ring-4 focus:outline-none focus:ring-brand-300 font-bold rounded-2xl text-base px-5 py-4 text-center transition-all duration-300 shadow-xl shadow-slate-900/20 hover:shadow-brand-500/30 hover:-translate-y-1">
-                            Masuk Dasbor
+                            Masuk
                         </button>
                     </form>
 
