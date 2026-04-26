@@ -119,7 +119,7 @@
     </div>
 </div>
 
-<!-- Floating Notification Warning (Gen Z aesthetic alert) -->
+<!-- Floating Notification Warning -->
 <div class="fixed bottom-10 right-10 z-50">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl shadow-red-900/20 max-w-md animate-[bounce_3s_ease-in-out_infinite]">
         <div class="flex gap-4">

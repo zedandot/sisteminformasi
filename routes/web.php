@@ -21,3 +21,8 @@ Route::get('/admin/bap', function () {
 Route::get('/admin/monitoring', function () {
     return view('admin.monitoring.index');
 });
+
+Route::get('/admin/lokasi', function () {
+    return view('admin.lokasi.index');
+});
+
