@@ -97,11 +97,18 @@
                     $unreadNotif = \App\Models\Notifikasi::where('user_id', Auth::guard('admin')->id())
                                     ->where('status_baca', false)
                                     ->latest()->take(5)->get();
+                                    
+                    $hariIni = \Carbon\Carbon::now()->startOfDay();
+                    $pekerjaanKritis = \App\Models\Pekerjaan::where('status', '!=', 'Selesai')
+                                    ->whereDate('tanggal', '<=', $hariIni)
+                                    ->get();
+                                    
+                    $totalNotif = $unreadNotif->count() + $pekerjaanKritis->count();
                 @endphp
                 <div class="relative group">
                     <button class="relative p-2 text-slate-400 hover:text-brand-600 transition-colors bg-white rounded-full shadow-sm hover:shadow-md border border-slate-100">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                        @if($unreadNotif->count() > 0)
+                        @if($totalNotif > 0)
                         <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
                         @endif
                     </button>
@@ -110,14 +117,35 @@
                     <div class="absolute right-0 top-full pt-2 w-80 hidden group-hover:block z-50 transform origin-top-right transition-all">
                         <div class="bg-white rounded-2xl shadow-xl border border-slate-100 py-2">
                             <div class="px-4 py-3 border-b border-slate-50 flex justify-between items-center bg-slate-50/50 rounded-t-2xl">
-                                <span class="font-bold text-slate-800 text-sm">Notifikasi Baru</span>
-                                @if($unreadNotif->count() > 0)
-                                <span class="bg-red-100 text-red-600 px-2.5 py-0.5 rounded-full text-xs font-bold">{{ $unreadNotif->count() }}</span>
+                                <span class="font-bold text-slate-800 text-sm">Notifikasi & Peringatan</span>
+                                @if($totalNotif > 0)
+                                <span class="bg-red-100 text-red-600 px-2.5 py-0.5 rounded-full text-xs font-bold">{{ $totalNotif }}</span>
                                 @endif
                             </div>
                             <div class="max-h-80 overflow-y-auto">
+                                
+                                <!-- Tenggat Waktu Alerts (Dynamic) -->
+                                @foreach($pekerjaanKritis as $pk)
+                                    @php 
+                                        $selisih = $hariIni->diffInDays(\Carbon\Carbon::parse($pk->tanggal)->startOfDay(), false); 
+                                    @endphp
+                                    <a href="{{ route('admin.pekerjaan') }}" class="block px-4 py-3 bg-red-50/30 hover:bg-red-50 border-b border-red-50/50 transition-colors group/item">
+                                        <div class="flex items-start gap-2">
+                                            <div class="mt-0.5 w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0"></div>
+                                            <div>
+                                                <p class="text-sm text-slate-700 leading-snug font-semibold group-hover/item:text-red-700 transition-colors">
+                                                    Peringatan Tenggat: Proyek "{{ $pk->nama_pekerjaan }}" 
+                                                    {{ $selisih < 0 ? 'telah terlambat ' . abs($selisih) . ' hari!' : 'batas waktunya adalah HARI INI!' }}
+                                                </p>
+                                                <p class="text-[10px] text-red-400 font-bold uppercase tracking-wider mt-1">Sistem Otomatis</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                @endforeach
+
+                                <!-- Regular Notifications -->
                                 @forelse($unreadNotif as $notif)
-                                    <a href="{{ route('admin.monitoring') }}" class="block px-4 py-3 hover:bg-slate-50 border-b border-slate-50 last:border-0 transition-colors group/item">
+                                    <a href="{{ route('admin.notifikasi.read', $notif->id) }}" class="block px-4 py-3 hover:bg-slate-50 border-b border-slate-50 last:border-0 transition-colors group/item">
                                         <p class="text-sm text-slate-700 leading-snug font-medium group-hover/item:text-brand-600 transition-colors">{{ $notif->pesan }}</p>
                                         <div class="flex items-center gap-2 mt-2">
                                             <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -125,12 +153,14 @@
                                         </div>
                                     </a>
                                 @empty
+                                    @if($pekerjaanKritis->count() == 0)
                                     <div class="px-6 py-8 text-center flex flex-col items-center justify-center">
                                         <div class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center mb-3">
                                             <svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                                         </div>
                                         <p class="text-slate-500 text-sm font-medium">Belum ada notifikasi baru.</p>
                                     </div>
+                                    @endif
                                 @endforelse
                             </div>
                         </div>

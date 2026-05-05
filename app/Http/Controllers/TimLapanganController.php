@@ -76,10 +76,13 @@ class TimLapanganController extends Controller
             
             $laporan->update(['status' => 'dikirim']);
             
+            // Fetch pekerjaan for the name
+            $pekerjaan = Pekerjaan::find($request->pekerjaan_id);
+            
             // Create Notification for Admin
             \App\Models\Notifikasi::create([
                 'user_id' => \App\Models\User::where('role', 'admin')->first()->id,
-                'pesan' => 'Laporan BAP baru dari Tim Lapangan untuk diverifikasi.',
+                'pesan' => 'Progres baru: Tim Lapangan telah mengunggah foto untuk proyek "' . $pekerjaan->nama_pekerjaan . '". Silakan validasi.',
                 'status_baca' => false
             ]);
         }

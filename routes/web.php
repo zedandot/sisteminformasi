@@ -22,6 +22,14 @@ Route::middleware(['auth:admin', 'admin'])->prefix('admin')->group(function () {
     Route::get('/monitoring', [\App\Http\Controllers\Admin\MonitoringController::class, 'index'])->name('admin.monitoring');
     Route::post('/monitoring/validasi/{id}', [\App\Http\Controllers\Admin\MonitoringController::class, 'validasi'])->name('admin.monitoring.validasi');
     Route::get('/lokasi', [\App\Http\Controllers\Admin\LokasiController::class, 'index'])->name('admin.lokasi');
+    
+    Route::get('/notifikasi/{id}/read', function ($id) {
+        $notif = \App\Models\Notifikasi::findOrFail($id);
+        if ($notif->user_id == Auth::guard('admin')->id()) {
+            $notif->update(['status_baca' => true]);
+        }
+        return redirect()->route('admin.monitoring');
+    })->name('admin.notifikasi.read');
 });
 
 // Route Tim Lapangan
