@@ -1,19 +1,70 @@
 @extends('layouts.admin')
 
-@section('title', 'Lokasi Tim Lapangan')
-@section('subtitle', 'Pantau posisi dan lokasi tim lapangan secara real-time.')
+@section('title', 'Peta Lokasi Tim Lapangan')
+@section('subtitle', 'Pantau titik lokasi pengambilan foto tim lapangan secara visual melalui integrasi GPS.')
+
+@push('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+    #map {
+        height: 600px;
+        width: 100%;
+        border-radius: 2rem;
+        z-index: 1;
+    }
+</style>
+@endpush
 
 @section('content')
-<div class="flex items-center justify-center h-64">
-    <div class="text-center">
-        <div class="w-20 h-20 bg-brand-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-10 h-10 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-            </svg>
+
+<div class="bg-white rounded-[2.5rem] p-4 md:p-8 border border-slate-100 shadow-sm">
+    <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h3 class="text-lg font-bold text-slate-800">Live Mapping</h3>
+            <p class="text-sm text-slate-500">Menampilkan 20 koordinat foto terakhir.</p>
         </div>
-        <h3 class="text-xl font-bold text-slate-700 mb-2">Lokasi Tim Lapangan</h3>
-        <p class="text-slate-400 text-sm">Fitur peta lokasi tim sedang dalam pengembangan.</p>
+        <div class="flex items-center gap-4 text-sm font-medium">
+            <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-blue-500"></span> Titik GPS
+            </div>
+            <button onclick="map.setView([-6.200000, 106.816666], 10)" class="text-blue-600 hover:text-blue-700 hover:underline">Reset Pandangan</button>
+        </div>
+    </div>
+
+    <!-- Map Container -->
+    <div class="relative overflow-hidden shadow-inner border border-slate-200 rounded-[2rem]">
+        <div id="map"></div>
     </div>
 </div>
+
 @endsection
+
+@push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+    // Inisialisasi peta ke koordinat tengah (misal Jakarta)
+    var map = L.map('map').setView([-6.200000, 106.816666], 10);
+
+    // Tambahkan layer tile dari OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    // Data marker dari controller
+    var markersData = @json($markers);
+
+    // Tambahkan marker ke peta
+    var bounds = [];
+    markersData.forEach(function(marker) {
+        var markerObj = L.marker([marker.lat, marker.lng]).addTo(map)
+            .bindPopup(marker.popup);
+        bounds.push([marker.lat, marker.lng]);
+    });
+
+    // Sesuaikan pandangan peta agar semua marker terlihat
+    if (bounds.length > 0) {
+        map.fitBounds(bounds);
+    }
+</script>
+@endpush

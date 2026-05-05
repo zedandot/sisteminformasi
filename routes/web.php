@@ -14,38 +14,35 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 // Route Admin
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth:admin', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/bap', function () {
-        return view('admin.bap.index');
-    });
-    Route::get('/monitoring', function () {
-        return view('admin.monitoring.index');
-    });
+    Route::resource('/pekerjaan', \App\Http\Controllers\Admin\PekerjaanController::class)->names('admin.pekerjaan');
+    Route::get('/bap', [\App\Http\Controllers\Admin\BapController::class, 'index'])->name('admin.bap');
+    Route::get('/bap/{id}/cetak', [\App\Http\Controllers\Admin\BapController::class, 'cetak'])->name('admin.bap.cetak');
+    Route::get('/monitoring', [\App\Http\Controllers\Admin\MonitoringController::class, 'index'])->name('admin.monitoring');
+    Route::post('/monitoring/validasi/{id}', [\App\Http\Controllers\Admin\MonitoringController::class, 'validasi'])->name('admin.monitoring.validasi');
+    Route::get('/lokasi', [\App\Http\Controllers\Admin\LokasiController::class, 'index'])->name('admin.lokasi');
 });
 
-<<<<<<< HEAD
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-});
-
-Route::get('/admin/bap', function () {
-    return view('admin.bap.index');
-});
-
-Route::get('/admin/monitoring', function () {
-    return view('admin.monitoring.index');
-});
-
-Route::get('/admin/lokasi', function () {
-    return view('admin.lokasi.index');
-});
-
-=======
 // Route Tim Lapangan
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth:web,admin'])->group(function () {
     Route::get('/home', function () {
-        return view('home');
+        $semuaPekerjaan = \App\Models\Pekerjaan::with('lokasi')
+            ->where(function($query) {
+                $query->where('user_id', Auth::id())
+                      ->orWhereNull('user_id');
+            })->get();
+
+        $pekerjaans = $semuaPekerjaan->where('status', '!=', 'Selesai');
+        $totalTugas = $semuaPekerjaan->count();
+        $tugasSelesai = $semuaPekerjaan->where('status', 'Selesai')->count();
+
+        return view('home', compact('pekerjaans', 'totalTugas', 'tugasSelesai'));
     })->name('home');
 });
->>>>>>> 9588da86f36a1b1bab7507c214dff37fc77493ce
+
+Route::middleware(['auth:web'])->group(function () {
+
+    Route::get('/input-progres', [\App\Http\Controllers\TimLapanganController::class, 'index'])->name('tim.input');
+    Route::post('/input-progres', [\App\Http\Controllers\TimLapanganController::class, 'store'])->name('tim.input.store');
+});
