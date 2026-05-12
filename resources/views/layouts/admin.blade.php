@@ -13,8 +13,8 @@
     <aside class="w-72 bg-[#0A192F] text-white flex flex-col transition-all duration-300 relative z-20 shadow-2xl shadow-brand-900/20">
         <!-- Logo Area -->
         <div class="h-24 flex items-center px-6 border-b border-white/10 gap-4">
-            <img src="{{ asset('cv_asa.png') }}" alt="Logo CV Asa Karya Alam" class="h-16 object-contain drop-shadow-lg">
-            <div class="flex flex-col justify-center">
+            <img src="{{ asset('cv_asa.png') }}" alt="Logo CV Asa Karya Alam" class="h-14 w-14 scale-125 object-contain drop-shadow-lg shrink-0">
+            <div class="flex flex-col justify-center whitespace-nowrap">
                 <h1 class="text-white font-extrabold text-base tracking-tight uppercase leading-none">Asa Karya Alam</h1>
                 <p class="text-[9px] text-slate-400 font-medium tracking-widest mt-1">Kontraktor & Supplier</p>
             </div>

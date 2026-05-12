@@ -29,8 +29,8 @@
         <div class="relative z-20 border-b border-white/5">
             <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
                 <div class="flex items-center gap-4">
-                    <img src="{{ asset('cv_asa.png') }}" alt="Logo CV Asa Karya Alam" class="h-14 object-contain drop-shadow-md">
-                    <span class="text-white font-extrabold text-xl md:text-2xl tracking-tight">CV ASA KARYA ALAM
+                    <img src="{{ asset('cv_asa.png') }}" alt="Logo CV Asa Karya Alam" class="h-12 w-12 scale-125 object-contain drop-shadow-md shrink-0">
+                    <span class="text-white font-extrabold text-xl md:text-2xl tracking-tight whitespace-nowrap">CV ASA KARYA ALAM
                     </span>
                 </div>
 
