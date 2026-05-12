@@ -11,24 +11,24 @@
         body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen flex items-center justify-center text-slate-800 selection:bg-blue-200 relative overflow-hidden">
+<body class="min-h-screen flex items-center justify-center relative font-sans overflow-hidden bg-[#0f172a]">
     
-    <!-- Exact Decorative Blur from Home Page -->
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-400/20 blur-[100px] rounded-full -z-10 pointer-events-none"></div>
+    <!-- Full-screen background image -->
+    <img src="{{ asset('images/login_bg.png') }}" class="absolute inset-0 w-full h-full object-cover opacity-90" style="z-index: 1;" alt="Construction Background">
+    
+    <!-- Dark overlay to make text readable -->
+    <div class="absolute inset-0" style="background-color: rgba(15, 23, 42, 0.5); z-index: 2;"></div>
 
-    <!-- Login Card -->
-    <div class="relative z-10 w-full max-w-[420px] px-4">
-        
-        <div class="bg-white/90 backdrop-blur-2xl p-8 sm:p-10 rounded-[2.5rem] shadow-2xl shadow-blue-900/10 border border-white">
+    <!-- Glassmorphism Login Card -->
+    <div class="relative w-full max-w-md px-6" style="z-index: 10;">
+        <div class="rounded-3xl p-8 sm:p-10 shadow-2xl" style="background-color: rgba(255, 255, 255, 0.1); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2);">
             
-            <div class="flex flex-col items-center mb-10 text-center">
-                <!-- Using the same blue from the home page (bg-blue-600) -->
-                <div class="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center mb-6 shadow-md shadow-blue-200 text-white">
-                    <i data-lucide="building-2" class="w-7 h-7"></i>
-                </div>
-                <h1 class="text-3xl font-bold text-slate-900 mb-2">Portal Internal</h1>
-                <p class="text-sm text-slate-500 font-medium">
-                    Sistem Manajemen Lapangan<br><span class="font-bold text-slate-700">CV Asa Karya Alam</span>
+            <div class="flex flex-col items-center mb-8 text-center">
+                <!-- Logo -->
+                <img src="{{ asset('cv_asa.png') }}" alt="Logo CV Asa Karya Alam" class="h-20 object-contain mb-4 drop-shadow-lg">
+                <h1 class="text-3xl font-bold text-white mb-1 tracking-tight">Portal Internal</h1>
+                <p class="text-sm text-slate-200">
+                    Sistem Manajemen Lapangan
                 </p>
             </div>
 
@@ -36,46 +36,69 @@
                 @csrf
                 
                 <div class="space-y-1.5">
-                    <label class="block text-xs font-bold text-slate-700 ml-1">EMAIL PERUSAHAAN</label>
-                    <div class="relative group">
+                    <label class="block text-xs font-semibold text-slate-200 ml-1">Email Perusahaan</label>
+                    <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i data-lucide="mail" class="w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i>
+                            <i data-lucide="user" class="w-5 h-5 text-slate-300"></i>
                         </div>
-                        <input type="email" name="email" value="{{ old('email') }}" class="w-full bg-white border border-slate-200 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-blue-100 focus:border-blue-500 block pl-12 p-3.5 font-medium transition-all outline-none" placeholder="nama@asakaryaalam.com" required>
+                        <input type="email" name="email" value="{{ old('email') }}" class="w-full text-white text-sm rounded-xl focus:ring-2 focus:ring-blue-400 block pl-12 p-3.5 transition-all outline-none placeholder-slate-400" style="background-color: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.1);" placeholder="nama@asakaryaalam.com" required>
                     </div>
-                    @error('email')<p class="text-red-500 text-xs mt-1 ml-1">{{ $message }}</p>@enderror
+                    @error('email')<p class="text-red-400 text-xs mt-1 ml-1">{{ $message }}</p>@enderror
                 </div>
 
                 <div class="space-y-1.5">
-                    <div class="flex justify-between items-center px-1">
-                        <label class="block text-xs font-bold text-slate-700">KATA SANDI</label>
-                        <a href="#" class="text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors">Lupa sandi?</a>
-                    </div>
-                    <div class="relative group">
+                    <label class="block text-xs font-semibold text-slate-200 ml-1">Kata Sandi</label>
+                    <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i data-lucide="lock" class="w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i>
+                            <i data-lucide="lock" class="w-5 h-5 text-slate-300"></i>
                         </div>
-                        <input type="password" name="password" class="w-full bg-white border border-slate-200 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-blue-100 focus:border-blue-500 block pl-12 p-3.5 font-medium transition-all outline-none" placeholder="••••••••" required>
-                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer">
-                            <i data-lucide="eye-off" class="w-5 h-5 text-slate-400 hover:text-slate-600 transition-colors"></i>
+                        <input type="password" name="password" id="password" class="w-full text-white text-sm rounded-xl focus:ring-2 focus:ring-blue-400 block pl-12 p-3.5 transition-all outline-none placeholder-slate-400" style="background-color: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.1);" placeholder="••••••••" required>
+                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer" id="togglePassword">
+                            <i data-lucide="eye-off" id="eyeIcon" class="w-5 h-5 text-slate-300 hover:text-white transition-colors"></i>
                         </div>
                     </div>
-                    @error('password')<p class="text-red-500 text-xs mt-1 ml-1">{{ $message }}</p>@enderror
+                    @error('password')<p class="text-red-400 text-xs mt-1 ml-1">{{ $message }}</p>@enderror
                 </div>
 
-                <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-200 font-bold rounded-xl text-sm px-5 py-4 text-center transition-all mt-8 shadow-md shadow-blue-200">
-                    Masuk ke Sistem
+                <div class="flex items-center justify-between mt-2 mb-2">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="remember" class="w-4 h-4 rounded text-blue-500 focus:ring-blue-500" style="background-color: rgba(0, 0, 0, 0.25); border: 1px solid rgba(255, 255, 255, 0.2);">
+                        <label for="remember" class="ml-2 text-xs font-medium text-slate-200">Ingat saya</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-500 font-bold rounded-xl text-sm px-5 py-3.5 text-center transition-all shadow-lg shadow-blue-900">
+                    Login Sistem
                 </button>
             </form>
             
-            <div class="mt-8 text-center">
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sistem Internal &bull; Secured</p>
+            <div class="mt-8 text-center pt-6" style="border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                <p class="text-xs font-medium text-slate-300 tracking-wide">
+                    Sistem Internal &bull; Secured
+                </p>
             </div>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
+
+        // Toggle Password Visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        togglePassword.addEventListener('click', function () {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            
+            if (type === 'password') {
+                eyeIcon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                eyeIcon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        });
     </script>
 </body>
 </html>

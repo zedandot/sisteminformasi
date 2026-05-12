@@ -16,28 +16,20 @@
 
 <body class="bg-slate-50 min-h-screen text-slate-800 font-sans antialiased">
     <!-- Hero Header -->
-    <div class="relative bg-[#0B1120] overflow-hidden shadow-2xl">
+    <div class="relative bg-slate-900 overflow-hidden shadow-2xl">
+        <!-- Background Image -->
+        <img src="{{ asset('images/hero_bg.png') }}" class="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-luminosity" alt="Hero Background">
         <!-- Background Elements -->
-        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 mix-blend-overlay"></div>
-        <div
-            class="absolute top-0 right-0 w-[40rem] h-[40rem] bg-blue-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3">
-        </div>
-        <div
-            class="absolute bottom-0 left-0 w-[40rem] h-[40rem] bg-purple-500/10 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3">
-        </div>
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-900/80 to-slate-900/90 mix-blend-multiply"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+        <div class="absolute top-0 right-0 w-[40rem] h-[40rem] bg-blue-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 mix-blend-screen"></div>
+        <div class="absolute bottom-0 left-0 w-[40rem] h-[40rem] bg-indigo-500/20 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 mix-blend-screen"></div>
 
         <!-- Navigation -->
         <div class="relative z-20 border-b border-white/5">
             <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div
-                        class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
-                            </path>
-                        </svg>
-                    </div>
+                    <img src="{{ asset('cv_asa.png') }}" alt="Logo CV Asa Karya Alam" class="h-10 object-contain">
                     <span class="text-white font-bold text-xl tracking-tight">CV ASA KARYA ALAM
                     </span>
                 </div>
@@ -140,14 +132,26 @@
 
                             <div class="flex flex-col items-end gap-1.5">
                                 @php
-                                    $laporanTerkini = $p->laporans()->latest()->first();
-                                    $sedangDivolidasi = $laporanTerkini && in_array($laporanTerkini->status, ['dikirim', 'disetujui']);
+                                    $laporanAktif = $p->laporans()->where('user_id', Auth::id())
+                                        ->whereIn('status', ['draft', 'dikirim'])
+                                        ->latest()->first();
+                                    $hasBefore = false;
+                                    $hasAfter = false;
+                                    $sedangDivolidasi = false;
+                                    
+                                    if ($laporanAktif) {
+                                        $hasBefore = $laporanAktif->fotos()->where('tipe', 'before')->exists();
+                                        $hasAfter = $laporanAktif->fotos()->where('tipe', 'after')->exists();
+                                        $sedangDivolidasi = in_array($laporanAktif->status, ['dikirim', 'disetujui']);
+                                    }
                                 @endphp
 
                                 @if($sedangDivolidasi)
                                     <span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-amber-200 uppercase tracking-wider flex items-center gap-1">
                                         <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Menunggu Validasi
                                     </span>
+                                @elseif($hasBefore && !$hasAfter)
+                                    <span class="bg-blue-100 text-blue-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-blue-200 uppercase tracking-wider">Sedang Berjalan</span>
                                 @else
                                     <span class="bg-blue-100 text-blue-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-blue-200 uppercase tracking-wider">Tugas Aktif</span>
                                 @endif
@@ -205,7 +209,7 @@
                                     d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z">
                                 </path>
                             </svg>
-                            Buka Kamera Progres
+                            Buka Laporan Progres
                         </a>
                     @endif
                 </div>

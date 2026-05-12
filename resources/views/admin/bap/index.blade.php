@@ -96,10 +96,10 @@
             <div class="text-right shrink-0">
                 <div class="text-xs font-bold text-blue-500 uppercase tracking-widest mb-1">Disetujui Tanggal</div>
                 <div class="text-xl font-black text-slate-800 mb-3 tracking-tighter">{{ \Carbon\Carbon::parse($laporan->updated_at)->format('d M Y') }}</div>
-                <a href="{{ route('admin.bap.cetak', $laporan->id) }}" target="_blank" class="px-6 py-2.5 bg-slate-900 hover:bg-brand-600 text-white font-bold text-sm rounded-full transition-colors shadow-lg shadow-slate-900/20 w-full md:w-auto inline-flex items-center gap-2">
+                <button type="button" onclick="openCetakModal({{ $laporan->id }})" class="px-6 py-2.5 bg-slate-900 hover:bg-brand-600 text-white font-bold text-sm rounded-full transition-colors shadow-lg shadow-slate-900/20 w-full md:w-auto inline-flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                     Cetak BAP
-                </a>
+                </button>
             </div>
         </div>
         @empty
@@ -114,5 +114,74 @@
 
     </div>
 </div>
+
+<!-- Modal Input BAP -->
+<div id="cetakModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-[2rem] p-8 w-full max-w-md shadow-2xl transform transition-all">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-slate-800">Lengkapi Data BAP</h3>
+                <p class="text-xs text-slate-500">Isi data di bawah untuk diexport ke Excel.</p>
+            </div>
+        </div>
+
+        <form id="cetakForm" method="GET" action="">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-widest mb-1.5">Kontraktor / Vendor</label>
+                    <input type="text" name="kontraktor" value="CV ASA KARYA ALAM" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-widest mb-1.5">No. PO</label>
+                    <input type="text" name="no_po" placeholder="Contoh: 145972" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-widest mb-1.5">Tanggal PO</label>
+                    <input type="date" name="tanggal_po" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" required>
+                </div>
+                
+                <div class="flex gap-3 mt-8">
+                    <button type="button" onclick="closeCetakModal()" class="flex-1 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-xl transition-colors">Batal</button>
+                    <button type="submit" id="btnDownload" class="flex-1 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <span>Download BAP</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openCetakModal(id) {
+    document.getElementById('cetakForm').action = '{{ url("/admin/bap") }}/' + id + '/cetak';
+    document.getElementById('cetakModal').classList.remove('hidden');
+}
+function closeCetakModal() {
+    document.getElementById('cetakModal').classList.add('hidden');
+}
+
+// Loading state and anti-spam protection for BAP Generation
+document.getElementById('cetakForm').addEventListener('submit', function() {
+    const btn = document.getElementById('btnDownload');
+    const originalText = btn.innerHTML;
+    
+    // Change to loading state
+    btn.disabled = true;
+    btn.classList.add('opacity-75', 'cursor-not-allowed');
+    btn.innerHTML = `<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> <span>Memproses Excel...</span>`;
+    
+    // Close modal and restore button after 3 seconds (allowing browser to trigger download)
+    setTimeout(() => {
+        closeCetakModal();
+        btn.disabled = false;
+        btn.classList.remove('opacity-75', 'cursor-not-allowed');
+        btn.innerHTML = originalText;
+    }, 3000);
+});
+</script>
 
 @endsection
