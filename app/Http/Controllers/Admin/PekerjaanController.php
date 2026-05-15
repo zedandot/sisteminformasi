@@ -28,6 +28,7 @@ class PekerjaanController extends Controller
             'tanggal' => 'required|date',
             'status' => 'nullable|in:Aktif,Selesai,Pending',
             'user_id' => 'nullable|exists:users,id',
+            'no_po' => 'nullable|string|max:255',
         ]);
 
         $client = Client::firstOrCreate([
@@ -70,6 +71,7 @@ class PekerjaanController extends Controller
             'tanggal' => 'required|date',
             'status' => 'required|in:Aktif,Selesai,Pending',
             'user_id' => 'nullable|exists:users,id',
+            'no_po' => 'nullable|string|max:255',
         ]);
 
         $client = Client::firstOrCreate([

@@ -42,12 +42,14 @@
 
 <!-- List of BAPs -->
 <div class="mt-10">
-    <div class="flex items-center gap-3 mb-6">
-        <div class="w-1.5 h-6 bg-brand-500 rounded-full"></div>
-        <h3 class="text-xl font-bold tracking-tight text-slate-800">Daftar Antrean Berita Acara (BAP)</h3>
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
+        <div class="flex items-center gap-3">
+            <div class="w-1.5 h-6 bg-brand-500 rounded-full"></div>
+            <h3 class="text-lg sm:text-xl font-bold tracking-tight text-slate-800">Daftar Antrean BAP</h3>
+        </div>
         
         <!-- Filter/Sort -->
-        <div class="ml-auto flex gap-2">
+        <div class="sm:ml-auto flex gap-2">
             <span class="px-4 py-2 rounded-full bg-blue-50 text-blue-600 text-xs font-bold shrink-0 shadow-sm border border-blue-100">{{ $laporans->count() }} Laporan Disetujui</span>
         </div>
     </div>
@@ -55,7 +57,7 @@
     <div class="space-y-4">
         
         @forelse($laporans as $laporan)
-        <div class="glass-card bg-white border border-blue-100 rounded-[2rem] p-6 flex flex-col md:flex-row items-center gap-6 relative shadow-[0_8px_30px_rgb(59,130,246,0.05)] hover:shadow-[0_8px_30px_rgb(59,130,246,0.15)] transition-all duration-300">
+        <div class="glass-card bg-white border border-blue-100 rounded-[2rem] p-6 flex flex-col md:flex-row items-start md:items-center gap-6 relative shadow-[0_8px_30px_rgb(59,130,246,0.05)] hover:shadow-[0_8px_30px_rgb(59,130,246,0.15)] transition-all duration-300">
             <!-- Icon -->
             <div class="w-14 h-14 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center shrink-0 border border-blue-100">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
@@ -93,10 +95,10 @@
                 </div>
             </div>
 
-            <div class="text-right shrink-0">
+            <div class="w-full md:w-auto md:text-right shrink-0 mt-4 md:mt-0 pt-4 md:pt-0 border-t md:border-0 border-slate-100">
                 <div class="text-xs font-bold text-blue-500 uppercase tracking-widest mb-1">Disetujui Tanggal</div>
                 <div class="text-xl font-black text-slate-800 mb-3 tracking-tighter">{{ \Carbon\Carbon::parse($laporan->updated_at)->format('d M Y') }}</div>
-                <button type="button" onclick="openCetakModal({{ $laporan->id }})" class="px-6 py-2.5 bg-slate-900 hover:bg-brand-600 text-white font-bold text-sm rounded-full transition-colors shadow-lg shadow-slate-900/20 w-full md:w-auto inline-flex items-center gap-2">
+                <button type="button" onclick="openCetakModal({{ $laporan->id }}, '{{ $laporan->pekerjaan->no_po ?? '' }}')" class="px-6 py-2.5 bg-slate-900 hover:bg-brand-600 text-white font-bold text-sm rounded-full transition-colors shadow-lg shadow-slate-900/20 w-full md:w-auto inline-flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                     Cetak BAP
                 </button>
@@ -136,7 +138,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-widest mb-1.5">No. PO</label>
-                    <input type="text" name="no_po" placeholder="Contoh: 145972" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" required>
+                    <input type="text" name="no_po" id="bap_no_po" placeholder="Contoh: 145972" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" required>
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-widest mb-1.5">Tanggal PO</label>
@@ -156,8 +158,9 @@
 </div>
 
 <script>
-function openCetakModal(id) {
+function openCetakModal(id, no_po = '') {
     document.getElementById('cetakForm').action = '{{ url("/admin/bap") }}/' + id + '/cetak';
+    document.getElementById('bap_no_po').value = no_po;
     document.getElementById('cetakModal').classList.remove('hidden');
 }
 function closeCetakModal() {
