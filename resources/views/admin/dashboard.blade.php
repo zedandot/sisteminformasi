@@ -14,7 +14,7 @@
         <div class="relative z-10 flex flex-col h-full justify-between gap-4">
             <h3 class="text-sm font-semibold text-slate-500">Proyek Aktif</h3>
             <div>
-                <div class="text-5xl font-extrabold text-slate-800 tracking-tight">{{ sprintf('%02d', $proyekAktif) }}</div>
+                <div class="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight">{{ sprintf('%02d', $proyekAktif) }}</div>
                 <div class="flex items-center gap-1.5 mt-2 text-xs font-semibold text-emerald-500">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
                     &uarr; 12% dari bulan lalu
@@ -29,7 +29,7 @@
         <div class="relative z-10 flex flex-col h-full justify-between gap-4">
             <h3 class="text-sm font-semibold text-slate-500">BAP Menunggu</h3>
             <div>
-                <div class="text-5xl font-extrabold text-red-500 tracking-tight">{{ sprintf('%02d', $bapMenunggu) }}</div>
+                <div class="text-4xl md:text-5xl font-extrabold text-red-500 tracking-tight">{{ sprintf('%02d', $bapMenunggu) }}</div>
                 <div class="flex items-center gap-1.5 mt-2 text-xs font-semibold text-red-400">
                     <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
                     Deadline < 48 jam
@@ -44,7 +44,7 @@
         <div class="relative z-10 flex flex-col h-full justify-between gap-4">
             <h3 class="text-sm font-semibold text-slate-500">Tim Lapangan</h3>
             <div>
-                <div class="text-5xl font-extrabold text-slate-800 tracking-tight">{{ sprintf('%02d', $timLapangan) }}</div>
+                <div class="text-4xl md:text-5xl font-extrabold text-slate-800 tracking-tight">{{ sprintf('%02d', $timLapangan) }}</div>
                 <div class="flex items-center gap-1.5 mt-2 text-xs font-semibold text-slate-400">
                     Wilayah Jabodetabek
                 </div>
@@ -77,16 +77,16 @@
 </div>
 
 <!-- Aktivitas Lapangan Terbaru -->
-<div class="mt-8 bg-white rounded-[2.5rem] p-8 glass-card">
-    <div class="flex items-center justify-between mb-8">
+<div class="mt-8 bg-white rounded-3xl sm:rounded-[2.5rem] p-5 sm:p-8 glass-card">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <h3 class="text-lg font-bold tracking-tight text-slate-800">Aktivitas Lapangan Terbaru</h3>
-        <a href="{{ route('admin.monitoring') }}" class="text-sm font-semibold text-brand-500 hover:text-brand-600 flex items-center gap-1 transition-colors">
+        <a href="{{ route('admin.monitoring') }}" class="text-sm font-semibold text-brand-500 hover:text-brand-600 flex items-center gap-1 transition-colors self-start sm:self-auto">
             Lihat Semua Aktivitas <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
         </a>
     </div>
 
-    <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
+    <div class="overflow-x-auto -mx-8 px-8 sm:mx-0 sm:px-0 pb-4">
+        <table class="w-full text-left border-collapse min-w-[700px]">
             <thead>
                 <tr class="border-b border-slate-100">
                     <th class="pb-4 text-xs font-bold tracking-wider text-slate-400 uppercase w-1/3">Lokasi / Proyek</th>

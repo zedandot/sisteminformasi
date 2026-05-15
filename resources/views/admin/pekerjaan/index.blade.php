@@ -3,13 +3,13 @@
 @section('subtitle', 'Kelola daftar pekerjaan dan proyek yang sedang berjalan.')
 
 @section('content')
-<div class="glass-panel p-8 rounded-[2rem] shadow-sm border border-slate-200">
-    <div class="flex items-center justify-between mb-8">
+<div class="glass-panel p-4 sm:p-8 rounded-3xl sm:rounded-[2rem] shadow-sm border border-slate-200">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
             <h3 class="text-lg font-bold text-slate-800">Daftar Proyek / Pekerjaan</h3>
             <p class="text-sm text-slate-500">Total: {{ $pekerjaans->count() }} Proyek</p>
         </div>
-        <button onclick="document.getElementById('modalAdd').classList.remove('hidden')" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-md flex items-center gap-2">
+        <button onclick="document.getElementById('modalAdd').classList.remove('hidden')" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-md flex items-center justify-center gap-2 self-start sm:self-auto">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
             Tambah Proyek
         </button>
@@ -21,8 +21,8 @@
     </div>
     @endif
 
-    <div class="overflow-x-auto">
-        <table class="w-full text-sm text-left">
+    <div class="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+        <table class="w-full text-sm text-left min-w-[1000px]">
             <thead class="text-xs text-slate-500 uppercase bg-slate-50/50 border-y border-slate-200">
                 <tr>
                         <th class="px-6 py-4 text-left font-bold text-slate-800">Nama Proyek</th>

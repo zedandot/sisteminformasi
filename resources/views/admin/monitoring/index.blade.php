@@ -13,7 +13,7 @@
 
     <div class="grid grid-cols-1 gap-8">
         @forelse($laporans as $laporan)
-            <div class="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm relative overflow-hidden">
+            <div class="bg-white rounded-3xl sm:rounded-[2.5rem] p-5 sm:p-8 border border-slate-100 shadow-sm relative overflow-hidden">
                 <!-- Status Ribbon -->
                 <div class="mb-4 md:absolute md:top-8 md:right-8 md:mb-0">
                     @if($laporan->status == 'disetujui')
