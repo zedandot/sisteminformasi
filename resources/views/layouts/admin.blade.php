@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Asa Karya Alam') - Internal Field System</title>
+    <link rel="icon" href="{{ asset('cv_asa.png') }}" type="image/png">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
@@ -119,8 +120,8 @@
                                     
                     $totalNotif = $unreadNotif->count() + $pekerjaanKritis->count();
                 @endphp
-                <div class="relative group">
-                    <button class="relative p-2 text-slate-400 hover:text-brand-600 transition-colors bg-white rounded-full shadow-sm hover:shadow-md border border-slate-100">
+                <div class="relative" id="notifWrapper">
+                    <button type="button" onclick="toggleNotif()" class="relative p-2 text-slate-400 hover:text-brand-600 transition-colors bg-white rounded-full shadow-sm hover:shadow-md border border-slate-100">
                         <svg class="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                         @if($totalNotif > 0)
                         <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
@@ -128,7 +129,7 @@
                     </button>
 
                     <!-- Dropdown -->
-                    <div class="absolute right-[-40px] sm:right-0 top-full pt-2 w-[300px] sm:w-80 hidden group-hover:block z-50 transform origin-top-right transition-all">
+                    <div id="notifDropdown" class="absolute right-0 top-full pt-2 w-[280px] sm:w-80 hidden z-50 transform origin-top-right transition-all">
                         <div class="bg-white rounded-2xl shadow-xl border border-slate-100 py-2">
                             <div class="px-4 py-3 border-b border-slate-50 flex justify-between items-center bg-slate-50/50 rounded-t-2xl">
                                 <span class="font-bold text-slate-800 text-sm">Notifikasi & Peringatan</span>
@@ -143,7 +144,7 @@
                                     @php 
                                         $selisih = $hariIni->diffInDays(\Carbon\Carbon::parse($pk->tanggal)->startOfDay(), false); 
                                     @endphp
-                                    <a href="{{ route('admin.pekerjaan') }}" class="block px-4 py-3 bg-red-50/30 hover:bg-red-50 border-b border-red-50/50 transition-colors group/item">
+                                    <a href="{{ route('admin.pekerjaan.index') }}" class="block px-4 py-3 bg-red-50/30 hover:bg-red-50 border-b border-red-50/50 transition-colors group/item">
                                         <div class="flex items-start gap-2">
                                             <div class="mt-0.5 w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0"></div>
                                             <div>

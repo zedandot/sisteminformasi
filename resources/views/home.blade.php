@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Tim Lapangan</title>
+    <link rel="icon" href="{{ asset('cv_asa.png') }}" type="image/png">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -27,20 +28,20 @@
 
         <!-- Navigation -->
         <div class="relative z-20 border-b border-white/5">
-            <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <img src="{{ asset('cv_asa.png') }}" alt="Logo CV Asa Karya Alam" class="h-12 w-12 scale-125 object-contain drop-shadow-md shrink-0">
-                    <span class="text-white font-extrabold text-xl md:text-2xl tracking-tight whitespace-nowrap">CV ASA KARYA ALAM
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+                <div class="flex items-center gap-2 sm:gap-4 overflow-hidden">
+                    <img src="{{ asset('cv_asa.png') }}" alt="Logo CV Asa Karya Alam" class="h-10 w-10 sm:h-12 sm:w-12 scale-125 object-contain drop-shadow-md shrink-0">
+                    <span class="text-white font-extrabold text-base sm:text-xl md:text-2xl tracking-tight whitespace-nowrap truncate">CV ASA KARYA ALAM
                     </span>
                 </div>
 
-                <form method="POST" action="{{ route('logout') }}" class="m-0">
+                <form method="POST" action="{{ route('logout') }}" class="m-0 shrink-0 ml-2">
                     @csrf
                     <button type="submit"
-                        class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white/80 hover:text-white transition-all backdrop-blur-md"
+                        class="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white/80 hover:text-white transition-all backdrop-blur-md"
                         title="Keluar">
-                        <span class="text-sm font-semibold">Keluar</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span class="text-sm font-semibold hidden sm:inline">Keluar</span>
+                        <svg class="w-5 h-5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
                             </path>

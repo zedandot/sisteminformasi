@@ -23,11 +23,15 @@
                     @elseif($laporan->status == 'ditolak')
                         <span
                             class="inline-block px-4 py-2 bg-red-100 text-red-700 rounded-full text-xs font-bold uppercase tracking-wider">Ditolak</span>
-                    @else
+                    @elseif($laporan->status == 'dikirim')
                         <span
                             class="inline-block px-4 py-2 bg-amber-100 text-amber-700 rounded-full text-xs font-bold uppercase tracking-wider"><span
                                 class="inline-block w-2 h-2 rounded-full bg-amber-500 animate-pulse mr-2"></span>Menunggu
                             Validasi</span>
+                    @else
+                        <span
+                            class="inline-block px-4 py-2 bg-slate-100 text-slate-600 rounded-full text-xs font-bold uppercase tracking-wider">
+                            Draft (Sedang Dikerjakan)</span>
                     @endif
                 </div>
 
@@ -169,7 +173,7 @@
                 </div>
 
                 <!-- Action Form -->
-                @if(in_array($laporan->status, ['dikirim', 'draft']))
+                @if($laporan->status == 'dikirim')
                     <form action="{{ route('admin.monitoring.validasi', $laporan->id) }}" method="POST"
                         class="flex flex-col md:flex-row items-stretch md:items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
                         @csrf
@@ -184,6 +188,16 @@
                             class="px-6 py-3 w-full md:w-auto bg-blue-600 text-white hover:bg-blue-700 font-bold rounded-xl shadow-lg shadow-blue-200 transition-all">Setujui
                             & Buat BAP</button>
                     </form>
+                @elseif($laporan->status == 'draft')
+                    <div class="flex flex-col sm:flex-row items-center gap-4 bg-slate-50 p-4 sm:px-6 sm:py-5 rounded-2xl border border-slate-200">
+                        <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div>
+                            <h5 class="text-slate-800 font-bold mb-1">Status Laporan: Draft</h5>
+                            <p class="text-sm text-slate-500 font-medium">Tim Lapangan baru mengunggah kondisi awal. Menunggu pengunggahan foto Hasil Akhir (After) untuk dapat divalidasi.</p>
+                        </div>
+                    </div>
                 @endif
             </div>
         @empty

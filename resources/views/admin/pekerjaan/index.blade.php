@@ -88,12 +88,12 @@
 
 <!-- Modal Add -->
 <div id="modalAdd" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl">
-        <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+    <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl flex flex-col max-h-[calc(100vh-2rem)]">
+        <div class="p-5 sm:p-6 border-b border-slate-100 flex justify-between items-center shrink-0">
             <h3 class="text-lg font-bold text-slate-800">Tambah Proyek</h3>
             <button onclick="document.getElementById('modalAdd').classList.add('hidden')" class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
         </div>
-        <form action="{{ route('admin.pekerjaan.store') }}" method="POST" class="p-6 space-y-4">
+        <form action="{{ route('admin.pekerjaan.store') }}" method="POST" class="p-5 sm:p-6 space-y-4 overflow-y-auto">
             @csrf
             <div>
                 <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Pekerjaan</label>
@@ -139,12 +139,12 @@
 
 <!-- Modal Edit -->
 <div id="modalEdit" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl">
-        <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+    <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl flex flex-col max-h-[calc(100vh-2rem)]">
+        <div class="p-5 sm:p-6 border-b border-slate-100 flex justify-between items-center shrink-0">
             <h3 class="text-lg font-bold text-slate-800">Edit Proyek</h3>
             <button type="button" onclick="document.getElementById('modalEdit').classList.add('hidden')" class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
         </div>
-        <form id="formEdit" method="POST" class="p-6 space-y-4">
+        <form id="formEdit" method="POST" class="p-5 sm:p-6 space-y-4 overflow-y-auto">
             @csrf @method('PUT')
             <div>
                 <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Pekerjaan</label>

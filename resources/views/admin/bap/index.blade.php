@@ -119,8 +119,8 @@
 
 <!-- Modal Input BAP -->
 <div id="cetakModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-[2rem] p-8 w-full max-w-md shadow-2xl transform transition-all">
-        <div class="flex items-center gap-3 mb-6">
+    <div class="bg-white rounded-[2rem] w-full max-w-md shadow-2xl transform transition-all flex flex-col max-h-[calc(100vh-2rem)]">
+        <div class="flex items-center gap-3 p-6 sm:p-8 pb-0 sm:pb-0 shrink-0">
             <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
             </div>
@@ -130,7 +130,7 @@
             </div>
         </div>
 
-        <form id="cetakForm" method="GET" action="">
+        <form id="cetakForm" method="GET" action="" class="p-6 sm:p-8 pt-6 sm:pt-6 overflow-y-auto">
             <div class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-widest mb-1.5">Kontraktor / Vendor</label>
@@ -145,11 +145,11 @@
                     <input type="date" name="tanggal_po" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" required>
                 </div>
                 
-                <div class="flex gap-3 mt-8">
-                    <button type="button" onclick="closeCetakModal()" class="flex-1 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-xl transition-colors">Batal</button>
-                    <button type="submit" id="btnDownload" class="flex-1 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors flex items-center justify-center gap-2">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                        <span>Download BAP</span>
+                <div class="flex flex-col-reverse sm:flex-row gap-3 mt-8">
+                    <button type="button" onclick="closeCetakModal()" class="w-full sm:flex-1 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-xl transition-colors">Batal</button>
+                    <button type="submit" id="btnDownload" class="w-full sm:flex-1 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <span class="whitespace-nowrap">Download BAP</span>
                     </button>
                 </div>
             </div>
