@@ -49,6 +49,11 @@
 
             <a href="/admin/bap" class="flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 {{ request()->is('admin/bap') ? 'bg-brand-600 text-white shadow-lg shadow-brand-600/30 font-bold' : 'text-slate-400 hover:bg-white/5 hover:text-white' }}">
                 <svg class="w-5 h-5 {{ request()->is('admin/bap') ? 'text-white' : 'text-slate-500' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                BAP
+            </a>
+
+            <a href="/admin/pelacakan-bap" class="flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 {{ request()->is('admin/pelacakan-bap') ? 'bg-brand-600 text-white shadow-lg shadow-brand-600/30 font-bold' : 'text-slate-400 hover:bg-white/5 hover:text-white' }}">
+                <svg class="w-5 h-5 {{ request()->is('admin/pelacakan-bap') ? 'text-white' : 'text-slate-500' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                 Pelacakan BAP
             </a>
 
@@ -117,11 +122,17 @@
                     $pekerjaanKritis = \App\Models\Pekerjaan::where('status', '!=', 'Selesai')
                                     ->whereDate('tanggal', '<=', $hariIni)
                                     ->get();
+
+                    $satuBulanLalu = \Carbon\Carbon::now()->subMonth()->toDateString();
+                    $bapHarusDicairkan = \App\Models\Laporan::where('status_pengiriman_bap', 'sudah_dikirim')
+                                    ->whereNotNull('tanggal_kirim_bap')
+                                    ->whereDate('tanggal_kirim_bap', '<=', $satuBulanLalu)
+                                    ->get();
                                     
-                    $totalNotif = $unreadNotif->count() + $pekerjaanKritis->count();
+                    $totalNotif = $unreadNotif->count() + $pekerjaanKritis->count() + $bapHarusDicairkan->count();
                 @endphp
                 <div class="relative" id="notifWrapper">
-                    <button type="button" onclick="toggleNotif()" class="relative p-2 text-slate-400 hover:text-brand-600 transition-colors bg-white rounded-full shadow-sm hover:shadow-md border border-slate-100">
+                    <button type="button" onclick="toggleNotif(event)" class="relative p-2 text-slate-400 hover:text-brand-600 transition-colors bg-white rounded-full shadow-sm hover:shadow-md border border-slate-100">
                         <svg class="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                         @if($totalNotif > 0)
                         <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
@@ -139,6 +150,21 @@
                             </div>
                             <div class="max-h-80 overflow-y-auto">
                                 
+                                <!-- BAP Harus Dicairkan Alerts -->
+                                @foreach($bapHarusDicairkan as $bap)
+                                    <a href="{{ route('admin.pelacakan-bap') }}" class="block px-4 py-3 bg-red-50/30 hover:bg-red-50 border-b border-red-50/50 transition-colors group/item">
+                                        <div class="flex items-start gap-2">
+                                            <div class="mt-0.5 w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0"></div>
+                                            <div>
+                                                <p class="text-sm text-slate-700 leading-snug font-semibold group-hover/item:text-red-700 transition-colors">
+                                                    Peringatan Pencairan: BAP proyek "{{ $bap->pekerjaan->nama_pekerjaan ?? '-' }}" sudah 1 bulan sejak dikirim dan harus dicairkan.
+                                                </p>
+                                                <p class="text-[10px] text-red-400 font-bold uppercase tracking-wider mt-1">Sistem Pelacakan BAP</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                @endforeach
+
                                 <!-- Tenggat Waktu Alerts (Dynamic) -->
                                 @foreach($pekerjaanKritis as $pk)
                                     @php 
@@ -168,7 +194,7 @@
                                         </div>
                                     </a>
                                 @empty
-                                    @if($pekerjaanKritis->count() == 0)
+                                    @if($pekerjaanKritis->count() == 0 && $bapHarusDicairkan->count() == 0)
                                     <div class="px-6 py-8 text-center flex flex-col items-center justify-center">
                                         <div class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center mb-3">
                                             <svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
@@ -205,6 +231,23 @@
 
     @stack('scripts')
     <script>
+        // Notification Dropdown Logic
+        window.toggleNotif = function(event) {
+            if (event) event.stopPropagation();
+            const dropdown = document.getElementById('notifDropdown');
+            if (dropdown) {
+                dropdown.classList.toggle('hidden');
+            }
+        };
+
+        document.addEventListener('click', function(event) {
+            const wrapper = document.getElementById('notifWrapper');
+            const dropdown = document.getElementById('notifDropdown');
+            if (wrapper && dropdown && !wrapper.contains(event.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.getElementById('sidebar');
             const sidebarOverlay = document.getElementById('sidebar-overlay');

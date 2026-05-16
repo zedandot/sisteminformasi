@@ -19,6 +19,8 @@ Route::middleware(['auth:admin', 'admin'])->prefix('admin')->group(function () {
     Route::resource('/pekerjaan', \App\Http\Controllers\Admin\PekerjaanController::class)->names('admin.pekerjaan');
     Route::get('/bap', [\App\Http\Controllers\Admin\BapController::class, 'index'])->name('admin.bap');
     Route::get('/bap/{id}/cetak', [\App\Http\Controllers\Admin\BapController::class, 'cetak'])->name('admin.bap.cetak');
+    Route::get('/pelacakan-bap', [\App\Http\Controllers\Admin\PelacakanBapController::class, 'index'])->name('admin.pelacakan-bap');
+    Route::post('/pelacakan-bap/{id}/kirim', [\App\Http\Controllers\Admin\PelacakanBapController::class, 'kirim'])->name('admin.pelacakan-bap.kirim');
     Route::get('/monitoring', [\App\Http\Controllers\Admin\MonitoringController::class, 'index'])->name('admin.monitoring');
     Route::post('/monitoring/validasi/{id}', [\App\Http\Controllers\Admin\MonitoringController::class, 'validasi'])->name('admin.monitoring.validasi');
     Route::get('/lokasi', [\App\Http\Controllers\Admin\LokasiController::class, 'index'])->name('admin.lokasi');
