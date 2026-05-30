@@ -78,7 +78,7 @@
             <div class="mt-4 flex items-center justify-between text-xs text-slate-500 px-2">
                 <span>Status Operasional</span>
                 <span class="flex items-center gap-1 text-emerald-400">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> 12 Tim Aktif
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> {{ \App\Models\User::where('role', 'tim_lapangan')->count() }} Tim Aktif
                 </span>
             </div>
         </div>

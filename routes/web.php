@@ -51,8 +51,22 @@ Route::middleware(['auth:web,admin'])->group(function () {
     })->name('home');
 });
 
+// Route untuk detail pekerjaan (dipakai di email, reminder, Google Calendar)
+Route::get('/pekerjaan/{pekerjaan}', function (\App\Models\Pekerjaan $pekerjaan) {
+    if (Auth::guard('admin')->check()) {
+        return redirect()->route('admin.pekerjaan.show', $pekerjaan->id);
+    }
+    return redirect()->route('home');
+})->name('pekerjaan.show')->middleware('auth:web,admin');
+
 Route::middleware(['auth:web'])->group(function () {
 
     Route::get('/input-progres', [\App\Http\Controllers\TimLapanganController::class, 'index'])->name('tim.input');
     Route::post('/input-progres', [\App\Http\Controllers\TimLapanganController::class, 'store'])->name('tim.input.store');
+    
+    // Google Calendar Routes
+    Route::get('/google-calendar/authorize', [\App\Http\Controllers\GoogleCalendarAuthController::class, 'show'])->name('google-calendar.show');
+    Route::get('/google-calendar/start', [\App\Http\Controllers\GoogleCalendarAuthController::class, 'authorize'])->name('google-calendar.authorize');
+    Route::get('/auth/google/callback', [\App\Http\Controllers\GoogleCalendarAuthController::class, 'callback'])->name('google-calendar.callback');
+    Route::post('/google-calendar/revoke', [\App\Http\Controllers\GoogleCalendarAuthController::class, 'revoke'])->name('google-calendar.revoke');
 });
