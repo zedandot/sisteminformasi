@@ -97,6 +97,9 @@
     <!-- Main Content -->
     <main class="max-w-6xl mx-auto px-6 py-8 relative z-20 pb-24">
 
+        <!-- Google Calendar Widget -->
+        <x-google-calendar-widget />
+
         <div class="flex items-center justify-between mb-8">
             <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">Daftar Pekerjaan Hari Ini</h2>
             <div
