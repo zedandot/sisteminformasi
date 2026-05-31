@@ -5,8 +5,9 @@
     "description": "The skeleton application for the Laravel framework.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
-    "require": {
+"require": {
         "php": "^8.3",
+        "ext-gd": "*",
         "doctrine/dbal": "^4.4",
         "google/apiclient": "^2.19",
         "guzzlehttp/guzzle": "*",
