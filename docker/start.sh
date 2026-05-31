@@ -4,6 +4,9 @@
 php artisan migrate --force
 php artisan db:seed --force
 
+# Create storage symlink (required for serving uploaded files)
+php artisan storage:link --force
+
 # Start queue worker in background (untuk sinkronisasi Google Calendar, dll)
 php artisan queue:work --daemon --tries=3 &
 
