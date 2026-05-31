@@ -17,6 +17,6 @@ RUN cp .env.example .env && php artisan key:generate --force
 RUN chown -R www-data:www-data /var/www/html/storage \
     && chmod -R 775 /var/www/html/storage
 
-EXPOSE 8080
+EXPOSE $PORT
 
-CMD php -S 0.0.0.0:8080 -t public
+CMD php artisan migrate --force && php -S 0.0.0.0:$PORT -t public
