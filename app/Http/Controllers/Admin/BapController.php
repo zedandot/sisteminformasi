@@ -35,9 +35,9 @@ class BapController extends Controller
     {
         $laporan = Laporan::with(['pekerjaan.lokasi', 'pekerjaan.client', 'user', 'fotos'])->findOrFail($id);
         
-        $inputFileName = storage_path('app/template_bap.xlsx');
+        $inputFileName = resource_path('templates/template_bap.xlsx');
         if (!file_exists($inputFileName)) {
-            return back()->with('error', 'File template_bap.xlsx tidak ditemukan di folder storage/app. Pastikan sudah menyimpannya dalam format .xlsx (Excel Workbook).');
+            return back()->with('error', 'File template_bap.xlsx tidak ditemukan. Pastikan file ada di resources/templates/');
         }
 
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName);
