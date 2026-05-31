@@ -6,25 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('fotos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('laporan_id')->constrained('laporans')->cascadeOnDelete();
-            $table->enum('tipe', ['before', 'after']);
+            $table->foreignId('laporan_id')->constrained('laporans')->onDelete('cascade');
+            $table->string('tipe');
             $table->string('file_path');
             $table->string('gps')->nullable();
-            $table->timestamp('timestamp')->useCurrent();
+            $table->timestamp('timestamp')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('fotos');
