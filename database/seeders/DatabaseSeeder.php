@@ -15,22 +15,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Gunakan updateOrCreate agar tidak crash saat redeploy
+        // jika user sudah ada di database (duplicate entry)
+        User::updateOrCreate(
+            ['email' => 'admin@asakaryaalam.com'],
+            [
+                'name' => 'Admin Utama',
+                'role' => 'admin',
+                'field' => 'admin',
+                'password' => bcrypt('password123'),
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Admin Utama',
-            'email' => 'admin@asakaryaalam.com',
-            'role' => 'admin',
-            'field' => 'admin',
-            'password' => bcrypt('password123')
-        ]);
-
-        User::factory()->create([
-            'name' => 'Tim Lapangan',
-            'email' => 'tim@asakaryaalam.com',
-            'role' => 'tim_lapangan',
-            'field' => 'tim_lapangan',
-            'password' => bcrypt('password123')
-        ]);
+        User::updateOrCreate(
+            ['email' => 'tim@asakaryaalam.com'],
+            [
+                'name' => 'Tim Lapangan',
+                'role' => 'tim_lapangan',
+                'field' => 'tim_lapangan',
+                'password' => bcrypt('password123'),
+            ]
+        );
     }
 }
