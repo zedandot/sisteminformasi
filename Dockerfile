@@ -19,6 +19,6 @@ RUN cp .env.example .env && php artisan key:generate --force
 RUN chown -R www-data:www-data /var/www/html/storage \
     && chmod -R 775 /var/www/html/storage
 
-EXPOSE $PORT
+RUN chmod +x /var/www/html/docker/start.sh
 
-CMD php artisan migrate --force && php artisan db:seed --force && php -S 0.0.0.0:${PORT:-8080} -t public
+CMD ["/bin/sh", "/var/www/html/docker/start.sh"]
